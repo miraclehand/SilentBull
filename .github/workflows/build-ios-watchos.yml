@@ -1,0 +1,23 @@
+name: Build SilentBull watchOS
+
+on:
+  push:
+    paths:
+      - 'ios-watchos/**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build watchOS App
+      run: |
+        cd ios-watchos
+        xcodebuild -project SilentBullWatchApp.xcodeproj \
+                   -scheme SilentBullWatchApp \
+                   -destination 'generic/platform=watchOS' \
+                   clean build
+

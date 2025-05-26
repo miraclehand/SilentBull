@@ -1,0 +1,25 @@
+name: Build SilentBull WearOS
+
+on:
+  push:
+    paths:
+      - 'android-wearos/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+
+    - name: Build Wear OS APK
+      run: |
+        cd android-wearos
+        ./gradlew assembleDebug
