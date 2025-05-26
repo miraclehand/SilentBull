@@ -3,6 +3,7 @@ plugins {
     kotlin("android") version "1.9.10" apply false
 }
 
+
 tasks.register("clean", Delete::class) {
     delete(layout.buildDirectory)
 }
