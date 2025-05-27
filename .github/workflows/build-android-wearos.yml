@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SilentBull-WearOS-Release-APK
-          path: android-wearos/app/build/outputs/apk/release/app-release.apk
+          path: android-wearos/app/build/outputs/apk/release/app-release-signed.apk
           retention-days: 30
 
       - name: Authenticate to Google Cloud
@@ -69,6 +69,9 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
+      - name: Create Service Account File
+        run: echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > ./service-account-key.json
+
       - name: Deploy to Firebase App Distribution
         run: |
           firebase appdistribution:distribute \
@@ -78,7 +81,7 @@ jobs:
             --release-notes-file ./release-notes.txt \
             --project "${{ secrets.FIREBASE_PROJECT_ID }}"
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
+          GOOGLE_APPLICATION_CREDENTIALS: ./service-account-key.json
 
       - name: Notify deployment success
         if: success()
