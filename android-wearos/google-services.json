@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "55028200796",
+    "project_id": "silentbull-69116",
+    "storage_bucket": "silentbull-69116.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55028200796:android:fe75713b403d7693ca7d99",
+        "android_client_info": {
+          "package_name": "com.imsec.silentbull"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtLvDiLCZT4oeuSF8Tw_ur3ovxjYHH7nI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
