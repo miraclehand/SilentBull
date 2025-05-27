@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SilentBull"
 include(":app")
+

@@ -1,4 +1,4 @@
-name: Build SilentBull watchOS
+name: Build Watch OS App
 
 on:
   push:
