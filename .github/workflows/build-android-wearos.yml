@@ -1,15 +1,19 @@
 name: Build Wear OS App
 
-on:
-  push:
-    paths:
+on: 
+  push: 
+    paths: 
       - 'android-wearos/**'
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
       - uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -27,13 +31,63 @@ jobs:
         with:
           gradle-version: wrapper
 
-      - name: Build with Gradle
+      - name: Setup keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android-wearos/silentbull-release-key.keystore
+
+
+      - name: Build Signed Release APK
+        run: ./gradlew :app:assembleRelease
+        working-directory: android-wearos
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Build Debug APK (fallback)
+        if: failure()
         run: ./gradlew :app:assembleDebug
         working-directory: android-wearos
 
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SilentBull-WearOS-Debug-APK
-          path: android-wearos/app/build/outputs/apk/debug/app-debug.apk
+          name: SilentBull-WearOS-Release-APK
+          path: android-wearos/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy to Firebase App Distribution
+        run: |
+          firebase appdistribution:distribute \
+            android-wearos/app/build/outputs/apk/release/app-release.apk \
+            --app "${{ secrets.FIREBASE_APP_ID }}" \
+            --groups "wear-os-testers" \
+            --release-notes-file ./release-notes.txt \
+            --project "${{ secrets.FIREBASE_PROJECT_ID }}"
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ APK가 성공적으로 Firebase App Distribution에 배포되었습니다!"
+          echo "테스터들이 이메일로 알림을 받게 됩니다."
+
+      - name: Notify deployment failure
+        if: failure()
+        run: |
+          echo "❌ APK 배포에 실패했습니다."
+          echo "로그를 확인해주세요."

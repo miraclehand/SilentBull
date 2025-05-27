@@ -1,14 +1,15 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.silentbull"
+    namespace = "com.imsec.silentbull"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.silentbull"
+        applicationId = "com.imsec.silentbull"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -42,5 +43,9 @@ dependencies {
     // Wear OS specific dependencies
     implementation("androidx.wear:wear:1.3.0")
     implementation("com.google.android.support:wearable:2.9.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+    implementation("com.google.firebase:firebase-analytics")
+
     compileOnly("com.google.android.wearable:wearable:2.9.0")
 }
