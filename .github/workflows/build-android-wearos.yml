@@ -75,7 +75,7 @@ jobs:
       - name: Deploy to Firebase App Distribution
         run: |
           firebase appdistribution:distribute \
-            android-wearos/app/build/outputs/apk/release/app-release.apk \
+            android-wearos/app/build/outputs/apk/release/app-release-signed.apk \
             --app "${{ secrets.FIREBASE_APP_ID }}" \
             --groups "wear-os-testers" \
             --release-notes-file ./release-notes.txt \
