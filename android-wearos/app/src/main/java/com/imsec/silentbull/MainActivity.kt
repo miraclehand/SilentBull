@@ -1,4 +1,4 @@
-package com.silentbull
+package com.imsec.silentbull
 
 import android.app.Activity
 import android.os.Bundle
