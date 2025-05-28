@@ -49,6 +49,12 @@ jobs:
         run: ./gradlew :app:assembleDebug
         working-directory: android-wearos
 
+      - name: List APK files1
+        run: find android-wearos/app/build/outputs/apk -name "*.apk" -type f
+
+      - name: List APK files2
+        run: find android-wearos/app -name "*.apk" -type f
+
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:
