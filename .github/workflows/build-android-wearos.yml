@@ -49,17 +49,11 @@ jobs:
         run: ./gradlew :app:assembleDebug
         working-directory: android-wearos
 
-      - name: List APK files1
-        run: find android-wearos/app/build/outputs/apk -name "*.apk" -type f
-
-      - name: List APK files2
-        run: find android-wearos/app -name "*.apk" -type f
-
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:
           name: SilentBull-WearOS-Release-APK
-          path: android-wearos/app/build/outputs/apk/release/app-release-signed.apk
+          path: android-wearos/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
 
       - name: Authenticate to Google Cloud
@@ -81,7 +75,7 @@ jobs:
       - name: Deploy to Firebase App Distribution
         run: |
           firebase appdistribution:distribute \
-            android-wearos/app/build/outputs/apk/release/app-release-signed.apk \
+            android-wearos/app/build/outputs/apk/release/app-release.apk \
             --app "${{ secrets.FIREBASE_APP_ID }}" \
             --groups "wear-os-testers" \
             --release-notes-file ./release-notes.txt \
