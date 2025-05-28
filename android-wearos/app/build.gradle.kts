@@ -17,7 +17,7 @@ android {
     }
 
     signingConfigs {
-        create("release") {
+        release {
             storeFile file("../silentbull-release-key.keystore")
             storePassword System.getenv("KEYSTORE_PASSWORD")
             keyAlias System.getenv("KEY_ALIAS")
