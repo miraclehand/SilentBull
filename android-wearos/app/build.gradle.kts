@@ -12,8 +12,8 @@ android {
         applicationId = "com.imsec.silentbull"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = getGitCommitCount()
+        versionName = getGitVersionName()
     }
 
     signingConfigs {
@@ -45,6 +45,24 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+fun getGitCommitCount(): Int {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine = listOf("git", "rev-list", "--count", "HEAD")
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().toInt()
+}
+
+fun getGitVersionName(): String {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine = listOf("git", "describe", "--tags", "--always")
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
 }
 
 dependencies {
