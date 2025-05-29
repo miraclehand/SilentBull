@@ -1,4 +1,4 @@
-name: Build Watch OS App
+name: Build WatchOS App
 
 on:
   push:
@@ -15,6 +15,19 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Set up Homebrew
+      run: |
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $GITHUB_ENV
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+
+    - name: Install XcodeGen
+      run: brew install xcodegen
+
+    - name: Generate Xcode project
+      run: |
+        cd ios-watchos
+        xcodegen
 
     - name: Build watchOS App
       run: |
