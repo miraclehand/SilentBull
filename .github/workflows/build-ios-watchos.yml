@@ -16,11 +16,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Homebrew
-      run: |
-        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $GITHUB_ENV
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-
     - name: Install XcodeGen
       run: brew install xcodegen
 
@@ -36,4 +31,3 @@ jobs:
                    -scheme SilentBullWatchApp \
                    -destination 'generic/platform=watchOS' \
                    clean build
-

@@ -1,4 +1,4 @@
-name: Build Wear OS App
+name: Build WearOS App
 on:
   push:
     paths:
