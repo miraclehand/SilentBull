@@ -3,10 +3,9 @@ options:
   bundleIdPrefix: com.imsec
 targets:
   SilentBullWatchApp:
-    type: watchOS
+    type: application
     platform: watchOS
     sources: [Sources]
-    resources: [Resources]
     info:
       path: Info.plist
       version: 1.0
